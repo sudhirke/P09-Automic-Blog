@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { PostProvider, PostContext } from "./PostProvider";
+import { PostProvider, usePosts } from "./PostProvider";
 import { faker } from "@faker-js/faker";
 
 function createRandomPost() {
@@ -41,7 +41,7 @@ function App() {
 
 function Header() {
   // Step 3:  Read infomation from context value
-  const { onClearPosts } = useContext(PostContext);
+  const { onClearPosts } = usePosts();
 
   return (
     <header>
@@ -58,7 +58,7 @@ function Header() {
 }
 
 function SearchPosts() {
-  const { searchQuery, setSearchQuery } = useContext(PostContext);
+  const { searchQuery, setSearchQuery } = usePosts();
   return (
     <input
       value={searchQuery}
@@ -69,12 +69,12 @@ function SearchPosts() {
 }
 
 function Results() {
-  const { posts } = useContext(PostContext);
+  const { posts } = usePosts();
   return <p>🚀 {posts.length} atomic posts found</p>;
 }
 
 function Main() {
-  const { posts, onAddPost } = useContext(PostContext);
+  const { posts, onAddPost } = usePosts();
 
   return (
     <main>
@@ -122,7 +122,7 @@ function FormAddPost({ onAddPost }) {
 }
 
 function List() {
-  const { posts } = useContext(PostContext);
+  const { posts } = usePosts();
 
   return (
     <ul>
@@ -137,7 +137,7 @@ function List() {
 }
 
 function Archive() {
-  const { onAddPost } = useContext(PostContext);
+  const { onAddPost } = usePosts();
 
   // Here we don't need the setter function. We're only using state to store these posts because the callback function passed into useState (which generates the posts) is only called once, on the initial render. So we use this trick as an optimization technique, because if we just used a regular variable, these posts would be re-created on every render. We could also move the posts outside the components, but I wanted to show you this trick 😉
   const [posts] = useState(() =>
